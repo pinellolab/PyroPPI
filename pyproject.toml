@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyroppi"
+version = "1.0.0"
+description = "Bayesian hierarchical model for PPI Recorder base-editor two-hybrid screens"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "jax",
+    "numpyro",
+    "optax",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+figures = ["matplotlib", "scikit-learn"]
+notebooks = ["jupyter", "pyroppi[figures]"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

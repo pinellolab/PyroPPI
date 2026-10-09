@@ -1,0 +1,9 @@
+sample,treatment,replicate,POM_300_NM,POM_3_UM
+POM_3_UM_1,pomalidomide_3uM,1,0,1
+POM_3_UM_2,pomalidomide_3uM,2,0,1
+POM_3_UM_3,pomalidomide_3uM,3,0,1
+POM_3_UM_4,pomalidomide_3uM,4,0,1
+POM_300_NM_1,pomalidomide_300nM,1,1,0
+POM_300_NM_2,pomalidomide_300nM,2,1,0
+POM_300_NM_3,pomalidomide_300nM,3,1,0
+POM_300_NM_4,pomalidomide_300nM,4,1,0

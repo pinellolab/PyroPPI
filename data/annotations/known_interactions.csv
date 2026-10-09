@@ -1,0 +1,18 @@
+protein_a,protein_b,publications,direct,known,pubmed,methods
+XRCC2,RAD51D,10,True,True,10749867;10871607;11842113;12975363;16710300;25416956;25910212;28864920;31515488;32296183,2 hybrid;affinity chrom;anti tag coip;far western blotting;pull down;split luciferase complementation;two hybrid array;two hybrid bait and prey pooling approach;two hybrid prey pooling approach;validated two hybrid
+KRIT1,CCM2,6,True,True,17657516;23007647;25525273;25814554;25910212;27027284,anti tag coip;bio-layer interferometry;molecular sieving;pull down;two hybrid array;two hybrid bait and prey pooling approach;validated two hybrid;x-ray diffraction
+RAD51C,RAD51B,5,False,True,11751635;11842113;28864920;34591612;9469824,2 hybrid;anti bait coip;anti tag coip;electrophoresis;molecular sieving;pull down
+RAD51C,XRCC3,5,False,True,11751635;11842113;24005329;28864920;9469824,2 hybrid;anti bait coip;anti tag coip;electrophoresis;molecular sieving;pull down
+XRCC3,RAD51,3,False,True,11842113;28864920;9660962,2 hybrid;anti tag coip
+CCM2,PDCD10,2,True,True,17657516;23266514,anti tag coip;pull down
+CENPS,CENPX,2,True,True,22304917;23886707,molecular sieving;saxs
+FANCC,FANCE,2,False,True,11157805;12649160,2 hybrid;anti tag coip
+FANCE,FANCD2,2,False,True,12093742;12649160,2 hybrid;coip;pull down
+RAD51D,RAD51B,2,False,True,11751635;11842113,anti bait coip;electrophoresis;molecular sieving
+RAD51D,RAD51C,2,False,True,11751635;11842113,anti bait coip;pull down
+CCM2,TLNRD1,1,False,False,32296183,two hybrid array;two hybrid prey pooling approach;validated two hybrid
+FANCC,FANCG,1,False,False,25416956,mappit
+RAD51,SFR1,1,True,False,21252223,pull down
+RAD51C,RAD51,1,False,False,16395335,anti bait coip
+XRCC2,RAD51B,1,False,False,11751635,electrophoresis;molecular sieving
+XRCC2,RAD51C,1,False,False,11842113,anti bait coip

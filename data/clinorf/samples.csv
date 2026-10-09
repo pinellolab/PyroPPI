@@ -1,0 +1,6 @@
+sample,cell_line,treatment,replicate,1h,3h
+U2OS_RepA_0h,U2OS,rapamycin_0h,A,0,0
+U2OS_RepA_1h,U2OS,rapamycin_1h,A,1,0
+U2OS_RepA_3h,U2OS,rapamycin_3h,A,0,1
+U2OS_RepB_1h,U2OS,rapamycin_1h,B,1,0
+U2OS_RepB_3h,U2OS,rapamycin_3h,B,0,1
