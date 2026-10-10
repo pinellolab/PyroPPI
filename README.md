@@ -1,5 +1,8 @@
 # PyroPPI
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23245780.svg)](https://doi.org/10.5281/zenodo.23245780)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+
 PyroPPI is the model behind PPI Recorder, a pooled two-hybrid assay that reads protein interactions out of a CRISPR base editor.
 Two proteins are expressed as fusions on one plasmid, one to the adenine base editor ABE8e and one to the RNA-binding protein MCP, together with a barcoded reporter RNA carrying an MS2 hairpin.
 When the two proteins interact, the editor reaches the MCP-bound reporter and converts adenines to inosines, so the fraction of edited reporter reads measures how often the pair comes together.
