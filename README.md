@@ -11,15 +11,38 @@ Sequencing recovers the edited fraction for thousands of pairs at once, and the 
 The model turns those counts into an interaction propensity for each pair, on the editing-probability scale, and separates the propensity from what a drug or a cell line adds on top of it.
 Pairs are partially pooled, so a pair with few reads is pulled toward the rest of the library rather than taking an extreme value on thin evidence.
 
-## Install
+Source code: https://github.com/pinellolab/PyroPPI
+
+## System requirements
+
+PyroPPI is a Python package and needs no non-standard hardware.
+It runs on any machine with Python 3.10 or newer.
+A GPU shortens the fits and is never required; the same code runs on a CPU and gives the same answers.
+
+Dependencies, installed automatically by pip:
+
+| Package | Required for |
+|---|---|
+| numpy, pandas, scipy | data handling and the statistics |
+| jax, jaxlib, numpyro, optax | the model and its inference |
+| tqdm | the progress bar |
+| matplotlib, scikit-learn | the figure scripts, through the `figures` extra |
+| jupyter | the vignette notebooks, through the `notebooks` extra |
+
+Tested on Ubuntu 22.04.5 LTS with Linux 5.15, Python 3.12.10, and numpy 2.5.3, pandas 3.0.6, scipy 1.18.1, jax 0.11.2, jaxlib 0.11.2, numpyro 0.22.0, optax 0.2.8, tqdm 4.70.1, matplotlib 3.11.2, scikit-learn 1.9.1 and pytest 9.1.1.
+macOS and Windows are untested.
+No version is pinned, so pip resolves current releases.
+
+## Installation
 
 ```sh
-pip install -e .
+git clone https://github.com/pinellolab/PyroPPI.git
+cd PyroPPI
+pip install -e '.[figures]'
 ```
 
-Python 3.10 or newer.
-The model runs on numpy, pandas, scipy, jax, numpyro, optax and tqdm.
-Add the figure dependencies with `pip install -e '.[figures]'` and the notebook dependencies with `pip install -e '.[notebooks]'`.
+Installing into a fresh virtual environment takes about 50 seconds on a desktop with no cached packages, and about 30 seconds with a warm pip cache.
+Drop the `[figures]` extra for the model alone, or use `'.[notebooks]'` to run the vignette notebooks.
 
 That install brings the CPU-only build of jaxlib, so the fits run on the CPU.
 Ask for the CUDA build alongside the package to fit on a GPU instead:
@@ -32,30 +55,82 @@ pip install -e '.[figures]' 'jax[cuda12]'
 Fitting then uses the GPU whenever JAX finds one, and falls back to the CPU otherwise.
 Reading a saved fit does no fitting, so it needs no GPU under either install.
 
-## Fitting a dataset
+Check the install with the test suite, which takes about a minute:
+
+```sh
+pytest tests/ -q
+```
+
+## Demo
+
+`data/rad51x9` ships with the package and is the smallest screen: nine proteins measured in both orientations across two cell lines and three rapamycin durations, 972 observations over 81 measured pairs.
+
+```sh
+python scripts/fit_all.py --dataset rad51x9 --results results
+```
+
+This takes about one minute on a desktop CPU and about 50 seconds on a GPU.
+It writes `results/rad51x9/` holding the posterior draws and three tables.
+
+Read the result:
+
+```python
+import pyroppi
+from pyroppi import stats
+
+fit = pyroppi.load_fit("results/rad51x9")
+pairs = fit.pairs().sort_values("propensity_mean", ascending=False)
+print(pairs.head(3)[["protein_a", "protein_b", "propensity_mean"]])
+print(stats.control_threshold(pairs))
+```
+
+Expected output: the three highest-ranked pairs are RAD51D with XRCC2 at a propensity near 0.140, RAD51C with XRCC3 near 0.106, and RAD51B with RAD51C near 0.054, against a control threshold of 0.040 set by the GFP and mCherry pairs.
+Those three are the known BCDX2 and CX3 contacts, and they are the only pairs the control test calls.
+
+## Instructions for use
+
+To run PyroPPI on your own screen, write two tables into one directory.
+
+`counts.csv` takes one row per sample and measured pair:
+
+| sample | bait | prey | total | edited |
+|---|---|---|---|---|
+| U2OS_RepA_0h | RAD51D | XRCC2 | 4183 | 512 |
+
+`bait` is the base-editor fusion, `prey` is the MCP fusion, `total` is the reporter reads assigned to that pair in that sample, and `edited` is how many of them were edited.
+
+`samples.csv` takes one row per sample, with a `sample` column matching the counts and one binary column per condition:
+
+| sample | 3h | HCT |
+|---|---|---|
+| U2OS_RepA_0h | 0 | 0 |
+| HCT_RepA_3h | 1 | 1 |
+
+The sample whose condition columns are all zero is the reference, and every coefficient is read against it.
+
+Then fit, naming which columns belong to the drug block and which to the cell block:
 
 ```python
 import pyroppi
 
-counts, samples = pyroppi.read_dataset("data/rad51x9")
-fit = pyroppi.fit(
-    counts,
-    samples,
-    drug=["1h", "3h", "HCT_x_1h", "HCT_x_3h"],
-    cell=["HCT"],
-)
+counts, samples = pyroppi.read_dataset("my_screen")
+fit = pyroppi.fit(counts, samples, drug=["3h"], cell=["HCT"])
+fit.pairs().to_csv("my_pairs.csv", index=False)
+```
 
+Leave `drug` and `cell` empty for a screen measured under one condition.
+Pass `baseline=False` for a screen where every sample is treated and there is no untreated arm, as in the degrader vignette.
+
+A fit answers three questions:
+
+```python
 fit.pairs()          # one row per pair: propensity and its interval
 fit.effects()        # what each drug and cell covariate adds, per pair
 fit.contributions()  # the fitted mean per observation, split into its three parts
-fit.save("results/rad51x9")
+fit.save("results/my_screen")
 ```
 
-`counts.csv` holds one row per sample and measured pair with columns `sample`, `bait`, `prey`, `total` and `edited`.
-`samples.csv` holds one row per sample with the binary design columns named in `drug` and `cell`.
-The reference condition is the sample whose design columns are all zero.
 A pair measured in both orientations is collapsed to one canonical pair, so the result is symmetric.
-
 Observations below `min_reads`, which defaults to 20, are censored out of the likelihood and stay in the table.
 A pair left with no observation above the floor is dropped.
 
@@ -122,3 +197,8 @@ Each vignette is a notebook with its output and a script that produces the same 
 ## Data
 
 `data/README.md` records, for every table, the source experiment, the cell lines and conditions, the reporter position scored, how the edited counts were derived, and the citation for any third-party annotation.
+
+## Licence
+
+PyroPPI is released under the GNU Affero General Public License v3.0 or later, a licence approved by the Open Source Initiative.
+The full text is in `LICENSE`.
