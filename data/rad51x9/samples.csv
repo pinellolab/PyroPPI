@@ -1,0 +1,13 @@
+sample,cell_line,treatment,replicate,1h,3h,HCT_x_1h,HCT_x_3h,HCT
+HCT_RAD51x9_RepA_0h,HCT116,rapamycin_0h,A,0,0,0,0,1
+HCT_RAD51x9_RepA_1h,HCT116,rapamycin_1h,A,1,0,1,0,1
+HCT_RAD51x9_RepA_3h,HCT116,rapamycin_3h,A,0,1,0,1,1
+HCT_RAD51x9_RepB_0h,HCT116,rapamycin_0h,B,0,0,0,0,1
+HCT_RAD51x9_RepB_1h,HCT116,rapamycin_1h,B,1,0,1,0,1
+HCT_RAD51x9_RepB_3h,HCT116,rapamycin_3h,B,0,1,0,1,1
+U2OS_RAD51x9_RepA_0h,U2OS,rapamycin_0h,A,0,0,0,0,0
+U2OS_RAD51x9_RepA_1h,U2OS,rapamycin_1h,A,1,0,0,0,0
+U2OS_RAD51x9_RepA_3h,U2OS,rapamycin_3h,A,0,1,0,0,0
+U2OS_RAD51x9_RepB_0h,U2OS,rapamycin_0h,B,0,0,0,0,0
+U2OS_RAD51x9_RepB_1h,U2OS,rapamycin_1h,B,1,0,0,0,0
+U2OS_RAD51x9_RepB_3h,U2OS,rapamycin_3h,B,0,1,0,0,0

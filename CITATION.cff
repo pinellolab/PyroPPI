@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: If you use PyroPPI, please cite it using these metadata.
+title: "PyroPPI: hierarchical Bayesian modelling of PPI Recorder screens"
+abstract: >-
+  PyroPPI estimates an interaction propensity for each protein pair measured by
+  PPI Recorder, a pooled two-hybrid assay that reads protein interactions out of
+  a CRISPR base editor. The model separates the propensity from the increments a
+  drug or a cell line adds, and partially pools across pairs so that sparsely
+  sampled pairs are drawn toward the population.
+type: software
+authors:
+  - family-names: Delano
+    given-names: Justin
+license: AGPL-3.0-or-later
+repository-code: https://github.com/pinellolab/PyroPPI
+version: 1.0.0
+date-released: 2026-10-10
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23245780
+    description: Archived release
+keywords:
+  - protein-protein interaction
+  - base editing
+  - Bayesian hierarchical model
+  - deep mutational scanning
